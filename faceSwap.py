@@ -134,17 +134,19 @@ def landmarksToPoints(landmarks):
 
     return points
 
-if __name__ == '__main__' :
-    swap("test-3.jpg", "test-4.jpg")
 
 def swap(filename1, filename2):
+    # Make sure OpenCV is version 3.0 or above
+    (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
 
-    print(filename1)
+    if int(major_ver) < 3:
+        print >> sys.stderr, 'ERROR: Script needs OpenCV 3.0 or higher'
+        sys.exit(1)
+
+
     img1 = cv2.imread(filename1);
     img2 = cv2.imread(filename2);
-
-    print("*********************")
-    img1Warped = np.copy(filename2);
+    img1Warped = np.copy(img2);
 
     image = face_recognition.load_image_file(filename1)
     landmarks = face_recognition.face_landmarks(image)
@@ -154,61 +156,57 @@ def swap(filename1, filename2):
     landmarks = face_recognition.face_landmarks(image)
     points2 = landmarksToPoints(landmarks)
 
-
     # Find convex hull
     hull1 = []
     hull2 = []
 
-    hullIndex = cv2.convexHull(np.array(points2), returnPoints = False)
-          
+    hullIndex = cv2.convexHull(np.array(points2), returnPoints=False)
+
     for i in range(0, len(hullIndex)):
         hull1.append(points1[int(hullIndex[i])])
         hull2.append(points2[int(hullIndex[i])])
-    
-    
+
     # Find delanauy traingulation for convex hull points
-    sizeImg2 = img2.shape    
+    sizeImg2 = img2.shape
     rect = (0, 0, sizeImg2[1], sizeImg2[0])
-     
+
     dt = calculateDelaunayTriangles(rect, hull2)
-    
+
     if len(dt) == 0:
         quit()
-    
+
     # Apply affine transformation to Delaunay triangles
     for i in range(0, len(dt)):
         t1 = []
         t2 = []
-        
-        #get points for img1, img2 corresponding to the triangles
+
+        # get points for img1, img2 corresponding to the triangles
         for j in range(0, 3):
             t1.append(hull1[dt[i][j]])
             t2.append(hull2[dt[i][j]])
-        
+
         warpTriangle(img1, img1Warped, t1, t2)
-    
-            
+
     # Calculate Mask
     hull8U = []
     for i in range(0, len(hull2)):
         hull8U.append((hull2[i][0], hull2[i][1]))
-    
-    mask = np.zeros(img2.shape, dtype = img2.dtype)  
-    
+
+    mask = np.zeros(img2.shape, dtype=img2.dtype)
+
     cv2.fillConvexPoly(mask, np.int32(hull8U), (255, 255, 255))
-    
-    r = cv2.boundingRect(np.float32([hull2]))    
-    
-    center = ((r[0]+int(r[2]/2), r[1]+int(r[3]/2)))
-        
-    
+
+    r = cv2.boundingRect(np.float32([hull2]))
+
+    center = ((r[0] + int(r[2] / 2), r[1] + int(r[3] / 2)))
+
     # Clone seamlessly.
     output = cv2.seamlessClone(np.uint8(img1Warped), img2, mask, center, cv2.NORMAL_CLONE)
     cv2.imwrite("_0.jpg", output)
-   # cv2.imshow("Face Swapped", output)
-    #cv2.waitKey(0)
-    
-    #cv2.destroyAllWindows()
-    #im = Image.open(output).convert('RGB')
-    #im.save('_0.png')
-        
+    # cv2.imshow("Face Swapped", output)
+    # cv2.waitKey(0)
+
+    # cv2.destroyAllWindows()
+    # im = Image.open(output).convert('RGB')
+    # im.save('_0.png')
+

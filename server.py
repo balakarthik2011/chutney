@@ -20,7 +20,7 @@ def dress():
     file2.save('_two.jpg')
     file2.close()
 
-    faceSwap.swap("test-3.jpg", "test-4.jpg")
+    faceSwap.swap("_one.jpg", "_two.jpg")
     return jsonify({"statsus": "ok"})
 
 if __name__ == "__main__":

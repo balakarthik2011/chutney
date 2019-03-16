@@ -37,4 +37,4 @@ RUN cd /fs && \
     pip3 install -r requirements.txt
 RUN echo "hai"
 WORKDIR /fs
-CMD python faceSwap.py
+CMD python server.py
