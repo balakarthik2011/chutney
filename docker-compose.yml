@@ -1,0 +1,11 @@
+version: "2"
+services:
+  web:
+    build: .
+    container_name: "fs"
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./:/fs
+    environment:
+      - NODE_ENV=development

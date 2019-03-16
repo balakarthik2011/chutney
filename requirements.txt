@@ -1,0 +1,9 @@
+face_recognition_models
+Click>=6.0
+dlib>=19.3.0
+numpy
+Pillow
+Flask>=1.0.2
+scipy>=0.17.0
+opencv-python>=4.0.0.21
+opencv-contrib-python>=4.0.0.21
