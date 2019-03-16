@@ -6,6 +6,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def hello():
     return render_template("index.html")
@@ -21,7 +22,8 @@ def dress():
     file2.close()
 
     faceSwap.swap("_one.jpg", "_two.jpg")
-    return jsonify({"statsus": "ok"})
+    return jsonify({"status": "ok"})
+
 
 if __name__ == "__main__":
     print("Hai")
