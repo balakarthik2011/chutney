@@ -4,12 +4,96 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Dressing Room</title>
 </head>
-<body>
-    <h1>Upload pictures</h1>
+<body class="t-a-c">
+<br>
+    <br>
+    <h3>Trail Room</h3>
+    <br>
+    <br>
+    <br>
     <form method="POST" action="dress" enctype="multipart/form-data">
-        <input type="file" name="file1">
-        <input type="file" name="file2">
-        <input type="submit" value="Upload">
-    </form>
+
+ <!-- Content Row -->
+      <!-- /.col-md-4 -->
+    <div class="row t-a-c">
+        <div class="col-md-4 {{add_class}} mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="card-title">Model Image</h2>
+                    <p class="card-text">Please select the costume image which you want to make a trial</p>
+                    {% if image_returned == True %}
+                        <img src="{{url_for('static', filename=(''))}}{{file2_name}}">
+                    {% endif%}
+                </div>
+
+                    {% if image_returned != True %}
+                        <div class="card-footer">
+                            <label class="btn btn-primary btn-sm">
+                                Browse <input type="file" class="" name="file2" hidden>
+                            </label>
+                        </div>
+                    {% endif%}
+
+            </div>
+        </div>
+        <!-- /.col-md-4 -->
+        <div class="col-md-4 {{add_class}} mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="card-title">Your  Image</h2>
+                    <p class="card-text">Please select the your image</p>
+                    {% if image_returned == True %}
+                    <img src="{{url_for('static', filename=(''))}}{{file1_name}}">
+                    {% endif%}
+                </div>
+                {% if image_returned != True %}
+                    <div class="card-footer">
+                         <label class="btn btn-primary btn-sm">
+                            Browse <input type="file" class="" name="file1" hidden>
+                         </label>
+                    </div>
+                {% endif%}
+            </div>
+        </div>
+        <!-- /.col-md-4 -->
+
+        {% if image_returned == True %}
+
+        <div class="col-md-4  mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="card-title">This is how you look</h2>
+                    {% if image_returned == True %}
+                        <img src="{{url_for('static', filename=(''))}}{{result_image}}">
+                    {% endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+        {% endif%}
+        <br>
+        <div class="row">
+            <div class="col-md-2 offset-md-5 mb-5">
+                {% if image_returned == True %}
+                    <a href="/" class="btn btn-primary btn-sm" >Try Another</a>
+                {% else %}
+                    <input type="submit" value="Upload" class="btn btn-primary btn-sm">
+                {% endif %}
+
+        </div>
+        </div>
+        </form>
+
 </body>
 </html>
+<style>
+    img{
+    max-height:500px;
+    max-width:500px;
+    height:auto;
+    width:auto;
+}
+.t-a-c{
+text-align: center;
+}
+</style>
